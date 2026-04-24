@@ -35,6 +35,7 @@ test:
   commands:
     - pip check
   requires:
+    - pip
     - django
 
 about:

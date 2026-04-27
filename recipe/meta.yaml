@@ -1,23 +1,24 @@
 {% set name = "applicationinsights" %}
-{% set version = "0.11.9" %}
+{% set version = "0.11.10" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 30a11aafacea34f8b160fbdc35254c9029c7e325267874e3c68f6bdbcd6ed2c3
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 0b761f3ef0680acf4731906dfc1807faa6f2a57168ae74592db0084a6099f7b3
 
 build:
-  noarch: python
   number: 0
-  script: "{{ PYTHON }} -m pip install . --no-deps -vv"
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
-    - python
     - pip
+    - python
+    - wheel
+    - setuptools
   run:
     - python
 
@@ -31,7 +32,10 @@ test:
     - applicationinsights.flask
     - applicationinsights.logging
     - applicationinsights.requests
+  commands:
+    - pip check
   requires:
+    - pip
     - django
 
 about:
@@ -40,13 +44,12 @@ about:
   license_family: MIT
   license_file: LICENSE.txt
   summary: This project extends the Application Insights API surface to support Python.
-
   description: |
     Application Insights is a service that allows developers to keep their application available,
     performing and succeeding. This Python module will allow you to send telemetry of various kinds
     (event, trace, exception, etc.) to the Application Insights service where they can be visualized
     in the Azure Portal.
-  doc_url: https://microsoft.github.io/ApplicationInsights-Python/
+  doc_url: https://microsoft.github.io/ApplicationInsights-Python
   dev_url: https://github.com/Microsoft/ApplicationInsights-Python
 
 extra:
